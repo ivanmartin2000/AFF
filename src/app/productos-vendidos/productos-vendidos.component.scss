@@ -1,0 +1,31 @@
+$primary: #7f53ac;
+$secondary: #647dee;
+
+.productos-vendidos {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 20px;
+
+  h1 {
+    color: $primary;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .producto-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+
+    h2 {
+      margin-top: 0;
+      color: $secondary;
+    }
+    p {
+      margin: 5px 0;
+    }
+  }
+}

@@ -1,0 +1,8 @@
+<div class="productos-comprados">
+  <h1>Productos Comprados</h1>
+  <div class="producto-card" *ngFor="let producto of productos">
+    <h2>{{ producto.nombre }}</h2>
+    <p><strong>Fecha:</strong> {{ producto.fechaCompra | date:'shortDate' }}</p>
+    <p><strong>Precio:</strong> ${{ producto.precio }}</p>
+  </div>
+</div>

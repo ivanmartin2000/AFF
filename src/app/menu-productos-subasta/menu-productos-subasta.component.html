@@ -1,0 +1,11 @@
+<div class="menu-productos-subasta">
+    <h1>Productos en Subasta - {{ category }}</h1>
+    <div class="products-list">
+      <div class="product-card" *ngFor="let product of products">
+        <h2>{{ product.name }}</h2>
+        <p><strong>Puja Actual:</strong> ${{ product.currentBid }}</p>
+        <button>Ver Detalles</button>
+      </div>
+    </div>
+  </div>
+  

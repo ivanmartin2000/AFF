@@ -1,0 +1,215 @@
+$primary: #7f53ac;
+$secondary: #647dee;
+@use "sass:color";
+
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: $secondary;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 200;
+
+  .top-bar-left {
+    display: flex;
+    align-items: center;
+
+    button {
+      background: transparent;
+      border: none;
+      color: #fff;
+      padding: 10px;
+      font-size: 14px;
+      margin: 0 5px;
+      cursor: pointer;
+      &:hover {
+        background-color: color.adjust($secondary, $lightness: 10%);
+        border-radius: 5px;
+      }
+    }
+
+    // Estilos para el dropdown de Categorías
+    .dropdown {
+      position: relative;
+      display: inline-block;
+      margin: 0 5px;
+
+      .dropdown-toggle {
+        background: transparent;
+        border: none;
+        color: #fff;
+        padding: 10px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        top: 100%; // Justo debajo del botón
+        left: 0;
+        background: #fff;
+        border-radius: 5px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 300;
+        padding: 5px 0;
+        min-width: 150px;
+
+        ul {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+
+          li {
+            width: 100%;
+
+            button {
+              width: 100%;
+              background: transparent;
+              border: none;
+              padding: 10px;
+              text-align: left;
+              font-size: 14px;
+              cursor: pointer;
+              color: #333;
+              &:hover {
+                background-color: #f1f1f1;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  .top-bar-right {
+    .logo {
+      width: 80px;
+      cursor: pointer;
+    }
+  }
+}
+
+.toggle-menu-btn {
+  position: fixed;
+  top: 70px; // Debajo de la top-bar
+  left: 20px;
+  z-index: 210;
+  background-color: $primary;
+  border: none;
+  color: #fff;
+  padding: 10px;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.side-menu {
+  position: fixed;
+  top: 60px; // Debajo de la top-bar
+  left: 0;
+  width: 60px; // Ancho mínimo (solo íconos)
+  height: calc(100% - 60px);
+  background-color: $primary;
+  color: #fff;
+  overflow: hidden;
+  transition: width 0.3s ease, padding 0.3s ease;
+  z-index: 150;
+  padding: 20px 5px;
+
+  &.open {
+    width: 250px; // Ancho al desplegar
+    padding: 20px; // Se aumenta el padding cuando está abierto
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    
+    li {
+      margin-bottom: 10px;
+      
+      button {
+        width: 100%;
+        background: transparent;
+        border: none;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        &:hover {
+          background-color: $secondary;
+        }
+        .icon {
+          font-size: 20px;
+          width: 24px;
+          text-align: center;
+        }
+        .text {
+          flex: 1;
+        }
+      }
+    }
+  }
+}
+
+.content {
+  margin-top: 70px; // Espacio para la barra superior
+  padding: 20px;
+  transition: margin-left 0.3s ease;
+}
+
+/* Botón moderno para mostrar el monto disponible */
+.btn-wallet {
+  background: linear-gradient(145deg, #1e90ff, #00bfff);
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-wallet:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-wallet:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.back-to-menu {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 210;
+  
+  button {
+    background-color: $primary;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    &:hover {
+      background-color: $secondary;
+    }
+  }
+}

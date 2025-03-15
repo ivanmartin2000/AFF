@@ -1,0 +1,66 @@
+<div class="menu-principal">
+  <h1>Tus Favoritos</h1>
+  
+  <!-- Lista de vendedores favoritos -->
+  <div class="favorites-list">
+    <div class="favorite-item" *ngFor="let fav of favoritos">
+      <!-- Cabecera: imagen y datos del vendedor -->
+      <div class="favorite-header" (click)="goToPerfilVendedor(fav.idUsuario)">
+        <img [src]="fav.imagenPerfil" alt="{{ fav.nombre }}" class="favorite-image">
+        <div class="favorite-info">
+          <h2>{{ fav.nombre }}</h2>
+          <p>{{ fav.descripcion }}</p>
+        </div>
+      </div>
+      
+      <!-- Producto en venta -->
+      <div class="product-section">
+        <h3>Producto en Venta</h3>
+        <div class="product-container">
+          <ng-container *ngIf="fav.productoVenta; else noVenta">
+            <img [src]="fav.productoVenta.imagen" alt="Producto en Venta" class="product-image">
+            <div class="product-details">
+              <p class="product-description">{{ fav.productoVenta.descripcion }}</p>
+              <p class="product-price">$ {{ fav.productoVenta.precio }}</p>
+              <button (click)="goToProductoVenta(fav)">Ver Detalle</button>
+            </div>
+          </ng-container>
+          <ng-template #noVenta>
+            <div class="no-product">Sin producto en venta</div>
+          </ng-template>
+        </div>
+      </div>
+      
+      <!-- Producto en subasta -->
+      <div class="subasta-section">
+        <h3>Producto en Subasta</h3>
+        <div class="product-container">
+          <ng-container *ngIf="fav.productoSubasta; else noSubasta">
+            <img [src]="fav.productoSubasta.imagen" alt="Producto en Subasta" class="product-image">
+            <div class="product-details">
+              <p class="product-description">{{ fav.productoSubasta.descripcion }}</p>
+              <p class="product-price">$ {{ fav.productoSubasta.precio }}</p>
+              <p class="timer">Tiempo restante: {{ timers[fav.idUsuario] }} s</p>
+              <button (click)="goToProductoSubasta(fav)">Ver Detalle</button>
+              <button (click)="pujarSubasta(fav)">Pujar</button>
+            </div>
+          </ng-container>
+          <ng-template #noSubasta>
+            <div class="no-product">Sin producto en subasta</div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Sección de sugerencias -->
+  <div class="suggestions">
+    <h2>Sugerencias</h2>
+    <div class="suggestions-list">
+      <div class="suggestion-item" *ngFor="let sug of sugerencias" (click)="goToPerfilVendedor(sug.idUsuario)">
+        <img [src]="sug.imagenPerfil" alt="{{ sug.nombre }}" class="suggestion-image">
+        <p>{{ sug.nombre }}</p>
+      </div>
+    </div>
+  </div>
+</div>

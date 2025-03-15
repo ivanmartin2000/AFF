@@ -1,0 +1,175 @@
+.crear-cuenta-container {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 30px 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+
+  .logo-container {
+    text-align: center;
+    margin-bottom: 20px;
+
+    img {
+      max-width: 150px;
+    }
+  }
+
+  .title {
+    text-align: center;
+    color: #7f53ac;
+    margin-bottom: 25px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .form-container {
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+
+        label {
+          margin-bottom: 5px;
+          font-weight: 500;
+          color: #333;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+          padding: 10px;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+          font-size: 16px;
+        }
+
+        .error-message {
+          color: #ff4444;
+          font-size: 14px;
+          margin-top: 5px;
+        }
+      }
+
+      .password-container {
+        position: relative;
+        input {
+          width: 100%;
+        }
+        .toggle-password {
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+          background: none;
+          border: none;
+          cursor: pointer;
+          font-size: 16px;
+        }
+      }
+
+      .switch-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        label {
+          font-size: 14px;
+          color: #333;
+          input {
+            margin-right: 5px;
+          }
+        }
+      }
+
+      .button-group {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+
+        button {
+          padding: 10px 20px;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          font-size: 16px;
+          transition: background-color 0.3s;
+        }
+        .submit-btn {
+          background: linear-gradient(to right, #7f53ac, #647dee);
+          color: #fff;
+        }
+        .reset-btn {
+          background: transparent;
+          color: #333;
+          border: 1px solid #ddd;
+        }
+      }
+    }
+  }
+}
+
+/* Estilos para el pop-up */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+
+  h2 {
+    color: #7f53ac;
+    margin-bottom: 15px;
+  }
+
+  input[type="file"],
+  input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+
+  button {
+    padding: 10px 20px;
+    background: #7f53ac;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    &:hover {
+      background: #647dee;
+    }
+  }
+}
+
+/* Enlace de login */
+.login-link {
+  text-align: center;
+  margin-top: 15px;
+  a {
+    color: #647dee;
+    text-decoration: none;
+    font-weight: 500;
+  }
+}

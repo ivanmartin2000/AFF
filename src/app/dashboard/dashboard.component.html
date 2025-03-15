@@ -1,0 +1,19 @@
+<div class="dashboard">
+    <h1>Dashboard</h1>
+    <div class="metrics-grid">
+      <div class="metric-card" *ngFor="let metric of metrics">
+        <div class="icon">{{ metric.icon }}</div>
+        <div class="info">
+          <h2>{{ metric.title }}</h2>
+          <p>{{ metric.value }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="charts">
+      <div class="chart" *ngFor="let chart of [1,2,3,4,5,6,7]">
+        <h3>Gráfico {{ chart }}</h3>
+        <div class="chart-placeholder">[Gráfico de Métricas]</div>
+      </div>
+    </div>
+  </div>
+  

@@ -1,0 +1,11 @@
+<div class="menu-productos-venta">
+    <h1>Productos en Venta - {{ category }}</h1>
+    <div class="products-list">
+      <div class="product-card" *ngFor="let product of products">
+        <h2>{{ product.name }}</h2>
+        <p><strong>Precio:</strong> ${{ product.price }}</p>
+        <button>Ver Detalles</button>
+      </div>
+    </div>
+  </div>
+  

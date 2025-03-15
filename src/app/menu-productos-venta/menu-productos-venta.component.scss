@@ -1,0 +1,36 @@
+$primary: #7f53ac;
+$secondary: #647dee;
+
+.menu-productos-venta {
+  max-width: 1000px;
+  margin: 20px auto;
+  h1 {
+    color: $primary;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .products-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    .product-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      width: calc(33.33% - 20px);
+      text-align: center;
+      button {
+        background-color: $primary;
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        &:hover {
+          background-color: $secondary;
+        }
+      }
+    }
+  }
+}

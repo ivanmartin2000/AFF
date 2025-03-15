@@ -1,0 +1,53 @@
+<div class="recover-password-page">
+    <div class="recover-password-container">
+      <form (ngSubmit)="openPasswordReset()">
+        <h2>Recuperar Contraseña</h2>
+        <p>
+          <input
+            type="email"
+            placeholder="Ingresar correo para recuperación"
+            required
+            [(ngModel)]="email"
+            name="email"
+          />
+        </p>
+        <p>
+          <input
+            type="text"
+            placeholder="Código"
+            required
+            [(ngModel)]="codigo"
+            name="codigo"
+          />
+        </p>
+        <button type="submit">Verificar</button>
+      </form>
+    </div>
+  
+    <!-- Pop-up para cambiar contraseña -->
+    <div class="overlay" *ngIf="popupVisible"></div>
+  
+    <div class="password-reset-popup" *ngIf="popupVisible">
+      <h3>Ingresar Nueva Contraseña</h3>
+      <p>
+        <input
+          type="password"
+          placeholder="Nueva Contraseña"
+          required
+          [(ngModel)]="newPassword"
+          name="newPassword"
+        />
+      </p>
+      <p>
+        <input
+          type="password"
+          placeholder="Confirmar Nueva Contraseña"
+          required
+          [(ngModel)]="confirmPassword"
+          name="confirmPassword"
+        />
+      </p>
+      <button type="button" (click)="redirectToLogin()">Cambiar Contraseña</button>
+    </div>
+  </div>
+  

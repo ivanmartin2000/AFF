@@ -1,0 +1,9 @@
+<div class="ranking-subastas">
+    <h1>Ranking de Subastas</h1>
+    <div class="subasta-card" *ngFor="let subasta of subastas">
+      <h2>{{ subasta.producto }}</h2>
+      <p><strong>Ofertas:</strong> {{ subasta.ofertas }}</p>
+      <p><strong>Finaliza:</strong> {{ subasta.fechaFinal | date:'short' }}</p>
+    </div>
+  </div>
+  

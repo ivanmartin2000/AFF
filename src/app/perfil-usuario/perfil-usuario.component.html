@@ -1,0 +1,127 @@
+<div class="profile-page">
+ 
+
+  <!-- Contenedor principal del perfil -->
+  <div class="profile-container">
+    <h2>Perfil de Usuario</h2>
+
+    <!-- Datos del Usuario -->
+    <div class="attribute-list">
+      <div class="form-group">
+        <label>Nombre de Usuario</label>
+        <input type="text" [value]="username" disabled>
+      </div>
+      <div class="form-group">
+        <label>Correo Electrónico</label>
+        <input type="email" [value]="email" disabled>
+      </div>
+    </div>
+
+    <!-- Sección de Direcciones -->
+    <div class="section addresses-section">
+      <h3>Direcciones</h3>
+      <p *ngIf="addresses.length === 0">No tienes direcciones registradas.</p>
+      <div class="list" *ngIf="addresses.length > 0">
+        <label *ngFor="let address of addresses">
+          <input type="checkbox" [(ngModel)]="address.selected">
+          {{ address.label }}
+        </label>
+      </div>
+      <div class="action-buttons">
+        <button>Agregar</button>
+        <button>Modificar</button>
+        <button>Eliminar</button>
+      </div>
+    </div>
+
+    <!-- Sección de Tarjetas de Crédito -->
+    <div class="section cards-section">
+      <h3>Tarjetas de Crédito</h3>
+      <p *ngIf="cards.length === 0">No tienes tarjetas registradas.</p>
+      <div class="list" *ngIf="cards.length > 0">
+        <div class="card-item" *ngFor="let card of cards; let i = index">
+          <label>
+            <input type="checkbox" [(ngModel)]="card.selected">
+            {{ card.tipoTarjeta }} • {{ card.numeroTarjeta }} • {{ card.titular }} • Exp: {{ card.fechaExpiracion }}
+          </label>
+        </div>
+      </div>
+      <div class="action-buttons">
+        <button (click)="openCardModal()">Agregar</button>
+        <button (click)="editSelectedCard()" [disabled]="!isCardSelected">Modificar</button>
+        <button (click)="deleteSelectedCards()" [disabled]="!isCardSelected">Eliminar</button>
+      </div>
+    </div>
+
+    <!-- Botón para subir producto -->
+    <div class="upload-product">
+      <button (click)="openPopup()">Subir Producto</button>
+    </div>
+  </div>
+
+  <!-- Pop-up para Subir Producto -->
+  <div class="overlay" *ngIf="popupVisible" (click)="closePopup()"></div>
+  <div class="upload-popup" *ngIf="popupVisible">
+    <h3>Subir Publicación (Solo vendedores)</h3>
+    <div class="form-group">
+      <label>Imagen del Producto</label>
+      <input type="file" accept="image/*">
+    </div>
+    <div class="form-group">
+      <label>Título</label>
+      <input type="text">
+    </div>
+    <div class="form-group">
+      <label>Valor</label>
+      <input type="text">
+      <label class="switch-label">Subasta
+        <input type="checkbox">
+      </label>
+    </div>
+    <div class="form-group">
+      <label>Descripción</label>
+      <input type="text">
+    </div>
+    <div class="popup-buttons">
+      <button (click)="closePopup()">Cerrar</button>
+      <button>Subir</button>
+    </div>
+  </div>
+
+  <!-- Modal para ABM de Tarjetas -->
+  <div class="modal-overlay" *ngIf="showCardModal" (click)="closeCardModal()"></div>
+  <div class="card-modal" *ngIf="showCardModal">
+    <h3>{{ editingCardIndex !== null ? 'Modificar Tarjeta' : 'Agregar Tarjeta' }}</h3>
+    <form [formGroup]="cardForm" (ngSubmit)="saveCard()">
+      <div class="form-group">
+        <label>Número de Tarjeta</label>
+        <input type="text" formControlName="numeroTarjeta" placeholder="Ingresa el número">
+      </div>
+      <div class="form-group">
+        <label>Titular</label>
+        <input type="text" formControlName="titular" placeholder="Nombre del titular">
+      </div>
+      <div class="form-group">
+        <label>Fecha de Expiración</label>
+        <input type="date" formControlName="fechaExpiracion">
+      </div>
+      <div class="form-group">
+        <label>CVV</label>
+        <input type="text" formControlName="cvv" placeholder="CVV">
+      </div>
+      <div class="form-group">
+        <label>Tipo de Tarjeta</label>
+        <select formControlName="tipoTarjeta">
+          <option value="Visa">Visa</option>
+          <option value="MasterCard">MasterCard</option>
+          <option value="American Express">American Express</option>
+          <option value="Discover">Discover</option>
+        </select>
+      </div>
+      <div class="modal-buttons">
+        <button type="submit">{{ editingCardIndex !== null ? 'Guardar Cambios' : 'Agregar' }}</button>
+        <button type="button" (click)="closeCardModal()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>

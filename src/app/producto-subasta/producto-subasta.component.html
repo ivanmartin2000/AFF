@@ -1,0 +1,24 @@
+<div class="producto-subasta-container">
+    <h1>{{ product.name }}</h1>
+    <p>{{ product.description }}</p>
+    <p><strong>Precio Actual:</strong> ${{ product.currentPrice }}</p>
+    <p><strong>Vendedor:</strong> {{ product.seller }}</p>
+  
+    <!-- Fecha de caducidad (fin de subasta) -->
+    <p><strong>Finaliza:</strong> {{ product.endDate | date:'medium' }}</p>
+  
+    <button class="subasta-button" (click)="participarSubasta()">Participar en Subasta</button>
+  
+    <!-- Ingresar oferta -->
+    <div class="oferta-section">
+      <label for="oferta-input"><strong>Ingresa tu oferta:</strong></label>
+      <input
+        id="oferta-input"
+        type="number"
+        [(ngModel)]="oferta"
+        placeholder="Ej: 600.00"
+      />
+      <button class="oferta-button" (click)="hacerOferta()">Ofertar</button>
+    </div>
+  </div>
+  

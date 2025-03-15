@@ -1,0 +1,62 @@
+$primary: #7f53ac;
+$secondary: #647dee;
+
+.producto-subasta-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+
+  h1 {
+    color: $primary;
+    margin-bottom: 15px;
+  }
+
+  p {
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+
+  .subasta-button {
+    background-color: $primary;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 20px;
+
+    &:hover {
+      background-color: $secondary;
+    }
+  }
+
+  .oferta-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+
+    input {
+      width: 120px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .oferta-button {
+      background-color: $primary;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $secondary;
+      }
+    }
+  }
+}

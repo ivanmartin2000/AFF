@@ -1,0 +1,31 @@
+$primary: #7f53ac;
+$secondary: #647dee;
+@use "sass:color";
+
+.ver-categorias {
+  max-width: 800px;
+  margin: 20px auto;
+  h1 {
+    color: $primary;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    li {
+      margin: 10px 0;
+      button {
+        background-color: $secondary;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        &:hover {
+          background-color: color.adjust($secondary, $lightness: -10%);
+        }
+      }
+    }
+  }
+}

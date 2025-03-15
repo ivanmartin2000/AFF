@@ -1,0 +1,29 @@
+<div class="publicar-producto">
+    <h1>Publicar Producto</h1>
+    <form (ngSubmit)="publicar()">
+      <div class="form-group">
+        <label>Título</label>
+        <input type="text" [(ngModel)]="producto.titulo" name="titulo" required />
+      </div>
+      <div class="form-group">
+        <label>Descripción</label>
+        <textarea [(ngModel)]="producto.descripcion" name="descripcion" required></textarea>
+      </div>
+      <div class="form-group">
+        <label>Precio</label>
+        <input type="number" [(ngModel)]="producto.precio" name="precio" required />
+      </div>
+      <div class="form-group">
+        <label>Imagen</label>
+        <input type="file" (change)="onFileChange($event)" accept="image/*" />
+      </div>
+      <div class="form-group">
+        <label>
+          <input type="checkbox" [(ngModel)]="producto.esSubasta" name="esSubasta" />
+          Publicar en subasta
+        </label>
+      </div>
+      <button type="submit">Publicar Producto</button>
+    </form>
+  </div>
+  

@@ -1,0 +1,22 @@
+<div class="ver-envios">
+    <h1>Ver Envíos</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Fecha</th>
+          <th>Estado</th>
+          <th>Dirección</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let envio of envios">
+          <td>{{ envio.id }}</td>
+          <td>{{ envio.fecha | date:'shortDate' }}</td>
+          <td>{{ envio.estado }}</td>
+          <td>{{ envio.direccion }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

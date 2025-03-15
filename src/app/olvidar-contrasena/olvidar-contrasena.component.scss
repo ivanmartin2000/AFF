@@ -1,0 +1,109 @@
+.recover-password-page {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom right, #7032eb, #ff66c4);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  
+  .recover-password-container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    padding: 40px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    z-index: 1;
+  
+    h2 {
+      color: #7032eb;
+      margin-bottom: 20px;
+    }
+  
+    input[type="text"],
+    input[type="email"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+  
+    button {
+      background-color: #8c52ff;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+      width: 100%;
+  
+      &:hover {
+        background-color: #7032eb;
+      }
+    }
+  }
+  
+  /* Pop-up */
+  .password-reset-popup {
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    text-align: center;
+  
+    h3 {
+      color: #7032eb;
+      margin-bottom: 20px;
+    }
+  
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+  
+    button {
+      background-color: #8c52ff;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+      width: 100%;
+  
+      &:hover {
+        background-color: #7032eb;
+      }
+    }
+  }
+  
+  /* Overlay */
+  .overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+  

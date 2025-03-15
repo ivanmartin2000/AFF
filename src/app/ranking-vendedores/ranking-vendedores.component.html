@@ -1,0 +1,9 @@
+<div class="ranking-vendedores">
+    <h1>Ranking de Vendedores</h1>
+    <div class="vendedor-card" *ngFor="let vendedor of vendedores">
+      <h2>{{ vendedor.nombre }}</h2>
+      <p><strong>Ventas:</strong> {{ vendedor.ventas }}</p>
+      <p><strong>Rating:</strong> {{ vendedor.rating }}</p>
+    </div>
+  </div>
+  

@@ -1,0 +1,96 @@
+<div class="top-bar">
+    <div class="top-bar-left">
+        <button (click)="navigateTo('/subastas-semana')">Subastas de la Semana</button>
+        <button (click)="navigateTo('/ranking-subastas')">Ranking Subastas</button>
+        <button (click)="navigateTo('/ranking-vendedores')">Ranking Vendedores</button>
+        
+        <div class="dropdown">
+          <button class="dropdown-toggle" (click)="toggleCategories()">Categorías</button>
+          <div class="dropdown-menu" *ngIf="showCategories">
+            <ul>
+              <li *ngFor="let category of categories">
+                <button (click)="navigateToCategory(category)">{{ category.descripcion }}</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <button (click)="navigateTo('/subastas')">Ver Subastas</button>
+      </div>
+      
+      
+    <!-- Botón moderno para mostrar el monto disponible -->
+    <button class="btn-wallet" (click)="mostrarDetallesBilletera()">
+      Monto disponible: <span>{{ billetera?.monto | currency:'ARS':'symbol':'1.2-2' }}</span>
+    </button>
+    
+    <div class="top-bar-right">
+      <img src="LogoAF.png" alt="Logo All For Fans" class="logo">
+    </div>
+  </div>
+  
+  <!-- Botón para abrir/ocultar el menú lateral -->
+  <div>
+    <button class="toggle-menu-btn" style="left: 8px;" (click)="toggleSideMenu()">
+      {{ isSideMenuOpen ? 'X' : '☰' }}
+    </button>
+  </div>
+  
+  <!-- Menú Lateral -->
+  <div class="side-menu" [class.open]="isSideMenuOpen">
+    <ul>
+      <li>
+        <button style="margin-top: 50px;" (click)="navigateTo('/app/perfil-usuario')">
+          <span class="icon">👤</span>
+          <span class="text" *ngIf="isSideMenuOpen">Perfil de Usuario</span>
+        </button>
+      </li>
+      <li>
+        <button (click)="navigateTo('/app/productos-comprados')">
+          <span class="icon">🛒</span>
+          <span class="text" *ngIf="isSideMenuOpen">Comprados</span>
+        </button>
+      </li>
+      <li>
+        <button (click)="navigateTo('/app/productos-vendidos')">
+          <span class="icon">💰</span>
+          <span class="text" *ngIf="isSideMenuOpen">Vendidos</span>
+        </button>
+      </li>
+      <li>
+        <button (click)="navigateTo('/app/productos-publicados')">
+          <span class="icon">🏷️</span>
+          <span class="text" *ngIf="isSideMenuOpen">En Venta</span>
+        </button>
+      </li>
+      <li>
+        <button (click)="navigateTo('/app/producto-subasta')">
+          <span class="icon">🔨</span>
+          <span class="text" *ngIf="isSideMenuOpen">En Subasta</span>
+        </button>
+      </li>
+      <li>
+        <button (click)="navigateTo('/app/publicacion')">
+          <span class="icon">➕</span>
+          <span class="text" *ngIf="isSideMenuOpen">Publicar</span>
+        </button>
+      </li>
+      <li>
+        <button (click)="navigateTo('/app/envios')">
+          <span class="icon">🚚</span>
+          <span class="text" *ngIf="isSideMenuOpen">Envíos</span>
+        </button>
+      </li>
+    </ul>
+  </div>
+  
+  <!-- Botón "Volver al Menú Principal" -->
+  <div class="back-to-menu">
+    <button (click)="navigateTo('app/menu-principal')">Volver al Menú Principal</button>
+  </div>
+  
+  <!-- Contenido de la página -->
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+  

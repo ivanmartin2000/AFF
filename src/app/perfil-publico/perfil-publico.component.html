@@ -1,0 +1,24 @@
+<div class="profile-page">
+    <!-- Encabezado con logo y botón para volver al menú principal -->
+    <header class="profile-header">
+      <img src="LogoAF.png" alt="Logo All For Fans" class="logo" (click)="goToMenuPrincipal()">
+      <button class="menu-button" (click)="goToMenuPrincipal()">Menú Principal</button>
+    </header>
+    
+    <div class="profile-container" *ngIf="usuario">
+      <h2>Perfil Público de {{ usuario.nombres }} {{ usuario.apellidos }}</h2>
+      
+      <!-- Datos públicos -->
+      <div class="attribute-list">
+        <label>Nombre de Usuario:</label>
+        <input type="text" [value]="usuario.nombres + ' ' + usuario.apellidos" disabled>
+        
+        <label>Correo Electrónico:</label>
+        <input type="email" [value]="usuario.correo" disabled>
+        
+        <label>Descripción:</label>
+        <textarea [value]="usuario.descripcion" disabled></textarea>
+      </div>
+    </div>
+  </div>
+  
