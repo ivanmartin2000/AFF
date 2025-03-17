@@ -1,21 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { BilleteraService, Billetera } from '@app/billetera.service';
+import { BilleteraService } from '@app/billetera.service';
 import { MenuService, Categoria } from '@app/menu.service';
 
 @Component({
-  standalone: true,
   selector: 'app-layout',
+  standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './layout.component.html', 
   styleUrls: ['./layout.component.scss'],
 })
 export class LayoutComponent implements OnInit {
   isSideMenuOpen = false;
-  billetera: Billetera | null = null;
+  billetera: any = null;
   showCategories = false;
-  // Inicialmente la lista de categorías estará vacía
   categories: Categoria[] = [];
 
   constructor(
@@ -36,7 +35,6 @@ export class LayoutComponent implements OnInit {
       }
     );
 
-    // Obtiene las categorías desde el servicio
     this.menuService.getCategorias().subscribe(
       (data: Categoria[]) => {
         this.categories = data;
@@ -75,13 +73,12 @@ export class LayoutComponent implements OnInit {
   }
 
   navigateToCategory(category: Categoria): void {
-    // Navega a la ruta de la categoría, por ejemplo, '/categorias/:id'
     this.router.navigate(['/categorias', category.id]);
-    this.showCategories = false; // Cierra el dropdown
+    this.showCategories = false;
   }
 
   private getCurrentUserId(): number {
-    // Implementa la lógica para obtener el ID del usuario actual
-    return 1; // ejemplo
+    // Implementa la lógica para obtener el ID del usuario actual, por ejemplo, del token
+    return 1; // Ejemplo
   }
 }
