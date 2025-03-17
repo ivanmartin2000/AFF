@@ -1,9 +1,10 @@
 <div class="productos-publicados">
-    <h1>Productos Publicados</h1>
-    <div class="producto-card" *ngFor="let producto of productos">
-      <h2>{{ producto.nombre }}</h2>
-      <p><strong>Fecha de Publicación:</strong> {{ producto.fechaPublicacion | date:'shortDate' }}</p>
-      <p><strong>Estado:</strong> {{ producto.estado }}</p>
-    </div>
+  <h1>Productos Publicados</h1>
+  <div class="producto-card" *ngFor="let producto of productos">
+    <h2>{{ producto.nombre }}</h2>
+    <p>{{ producto.descripcion }}</p>
+    <p><strong>Fecha:</strong> {{ producto.fechaRegistro | date:'shortDate' }}</p>
+    <p><strong>Precio:</strong> ${{ producto.precio }}</p>
+    <img *ngIf="producto.rutaImagen && producto.nombreImagen" [src]="producto.rutaImagen + producto.nombreImagen" alt="{{ producto.nombre }}" />
   </div>
-  
+</div>

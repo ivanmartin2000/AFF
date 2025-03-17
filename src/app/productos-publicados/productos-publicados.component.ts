@@ -1,24 +1,32 @@
-import { Component } from '@angular/core';
+// src/app/productos-publicados/productos-publicados.component.ts
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-interface Producto {
-  id: number;
-  nombre: string;
-  fechaPublicacion: Date;
-  estado: string;
-}
+import { ProductosPublicadosService, ProductoPublicado } from '../productos-publicados.service';
 
 @Component({
-  standalone: true,
   selector: 'app-productos-publicados',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './productos-publicados.component.html',
-  styleUrls: ['./productos-publicados.component.scss'],
-  imports: [CommonModule]
+  styleUrls: ['./productos-publicados.component.scss']
 })
-export class ProductosPublicadosComponent {
-  productos: Producto[] = [
-    { id: 1, nombre: 'Producto Publicado 1', fechaPublicacion: new Date(), estado: 'Activo' },
-    { id: 2, nombre: 'Producto Publicado 2', fechaPublicacion: new Date(), estado: 'Inactivo' },
-    { id: 3, nombre: 'Producto Publicado 3', fechaPublicacion: new Date(), estado: 'Activo' },
-  ];
+export class ProductosPublicadosComponent implements OnInit {
+  productos: ProductoPublicado[] = [];
+
+  constructor(private productosService: ProductosPublicadosService) {}
+
+  ngOnInit(): void {
+    this.cargarProductosPublicados();
+  }
+
+  cargarProductosPublicados(): void {
+    this.productosService.getProductosPublicados().subscribe({
+      next: (data) => {
+        this.productos = data;
+      },
+      error: (err) => {
+        console.error('Error al obtener productos publicados:', err);
+      }
+    });
+  }
 }

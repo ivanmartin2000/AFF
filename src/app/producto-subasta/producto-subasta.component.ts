@@ -1,60 +1,87 @@
+// src/app/producto-subasta/producto-subasta.component.ts
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // <-- Importante
-
+import { ProductoSubastaService, ProductoSubasta } from '../producto-subasta.service';
+import { CountdownPipe } from '../countdown.pipe';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { PujaService, PujarRequest } from '../puja.service';
 
 @Component({
-  standalone: true,
   selector: 'app-producto-subasta',
+  standalone: true,
+  imports: [CommonModule, CountdownPipe, ReactiveFormsModule],
   templateUrl: './producto-subasta.component.html',
-  styleUrls: ['./producto-subasta.component.scss'],
-  imports: [
-    CommonModule,
-    FormsModule // <-- Añadir FormsModule para usar ngModel
-  ]
+  styleUrls: ['./producto-subasta.component.scss']
 })
-
 export class ProductoSubastaComponent implements OnInit {
-  productId: number | null = null;
-  oferta: number | null = null;
-
-  // Ejemplo de datos de producto
-  product = {
-    id: 0,
-    name: 'Producto en Subasta',
-    description: 'Descripción del producto en subasta...',
-    currentPrice: 500.00,
-    seller: 'VendedorSubasta',
-    endDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000) // Ejemplo: 2 días a partir de ahora
-  };
+  productos: ProductoSubasta[] = [];
+  bidModalVisible: boolean = false;
+  selectedProducto?: ProductoSubasta;
+  bidForm: FormGroup;
+  errorMessage: string = '';
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
+    private subastaService: ProductoSubastaService,
+    private fb: FormBuilder,
+    private pujaService: PujaService
+  ) {
+    this.bidForm = this.fb.group({
+      monto: [0, [Validators.required, Validators.min(0)]]
+    });
+  }
 
   ngOnInit(): void {
-    // Capturar el ID del producto desde la URL (ejemplo: /producto-subasta/456)
-    this.productId = Number(this.route.snapshot.paramMap.get('id'));
-
-    // Llamar a un servicio o cargar datos reales del producto usando productId.
-    // Aquí simulamos que la data ya está en "this.product".
-    this.product.id = this.productId || 0;
+    this.cargarProductosSubasta();
   }
 
-  participarSubasta(): void {
-    alert(`Participando en la subasta del producto ID: ${this.product.id}`);
-    // Aquí podrías agregar lógica para registrar la participación.
+  cargarProductosSubasta(): void {
+    this.subastaService.getProductosSubasta().subscribe({
+      next: (data) => {
+        this.productos = data;
+      },
+      error: (err) => {
+        console.error('Error al obtener productos en subasta:', err);
+      }
+    });
   }
 
-  hacerOferta(): void {
-    if (this.oferta && this.oferta > this.product.currentPrice) {
-      alert(`Oferta de $${this.oferta} realizada para el producto ID: ${this.product.id}`);
-      // Actualiza el precio actual (opcional) o llama a un servicio
-      this.product.currentPrice = this.oferta;
-    } else {
-      alert('La oferta debe ser mayor que el precio actual');
+  openBidModal(producto: ProductoSubasta): void {
+    this.selectedProducto = producto;
+    this.bidModalVisible = true;
+  }
+
+  closeBidModal(): void {
+    this.bidModalVisible = false;
+    this.selectedProducto = undefined;
+    this.bidForm.reset();
+    this.errorMessage = '';
+  }
+
+  submitBid(): void {
+    if (this.bidForm.invalid || !this.selectedProducto) {
+      return;
     }
+    const monto = this.bidForm.value.monto;
+
+    // Preparar la solicitud de puja.
+    const request: PujarRequest = {
+      idProducto: this.selectedProducto.idProducto,
+      // Si tienes un campo idSubasta en ProductoSubasta, úsalo; de lo contrario, utiliza idProducto.
+      idSubasta: this.selectedProducto.idSubasta || this.selectedProducto.idProducto,
+      monto: monto
+    };
+
+    this.pujaService.realizarPuja(request).subscribe({
+      next: (response) => {
+        alert('Puja realizada con éxito.');
+        this.closeBidModal();
+        // Opcional: recargar la lista para actualizar el estado de la subasta.
+        this.cargarProductosSubasta();
+      },
+      error: (err) => {
+        console.error('Error al realizar la puja:', err);
+        this.errorMessage = 'Error al realizar la puja. Inténtalo de nuevo.';
+      }
+    });
   }
 }
