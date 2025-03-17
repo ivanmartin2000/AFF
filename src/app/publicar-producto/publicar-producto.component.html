@@ -1,29 +1,57 @@
 <div class="publicar-producto">
-    <h1>Publicar Producto</h1>
-    <form (ngSubmit)="publicar()">
+  <h1>Publicar Producto</h1>
+  <form [formGroup]="productoForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label>Nombre:</label>
+      <input type="text" formControlName="nombre">
+    </div>
+    <div class="form-group">
+      <label>Descripción:</label>
+      <textarea formControlName="descripcion"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Marca:</label>
+      <select formControlName="idMarca">
+        <option *ngFor="let marca of marcas" [value]="marca.idMarca">
+          {{ marca.descripcion }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Precio:</label>
+      <input type="number" formControlName="precio">
+    </div>
+    <div class="form-group">
+      <label>Stock:</label>
+      <input type="number" formControlName="stock">
+    </div>
+    <div class="form-group">
+      <label>Imagen:</label>
+      <input type="file" (change)="onFileSelected($event)">
+    </div>
+    <div class="form-group">
+      <label>Tipo de Publicación:</label>
+      <select formControlName="tipoPublicacion">
+        <option value="venta">Venta</option>
+        <option value="subasta">Subasta</option>
+      </select>
+    </div>
+    <!-- Campos adicionales para subasta -->
+    <div class="subasta-fields" *ngIf="esSubasta">
       <div class="form-group">
-        <label>Título</label>
-        <input type="text" [(ngModel)]="producto.titulo" name="titulo" required />
+        <label>Fecha de Fin de Subasta:</label>
+        <input type="datetime-local" formControlName="fechaFinSubasta">
       </div>
       <div class="form-group">
-        <label>Descripción</label>
-        <textarea [(ngModel)]="producto.descripcion" name="descripcion" required></textarea>
+        <label>Oferta Inicial:</label>
+        <input type="number" formControlName="ofertaInicial">
       </div>
-      <div class="form-group">
-        <label>Precio</label>
-        <input type="number" [(ngModel)]="producto.precio" name="precio" required />
-      </div>
-      <div class="form-group">
-        <label>Imagen</label>
-        <input type="file" (change)="onFileChange($event)" accept="image/*" />
-      </div>
-      <div class="form-group">
-        <label>
-          <input type="checkbox" [(ngModel)]="producto.esSubasta" name="esSubasta" />
-          Publicar en subasta
-        </label>
-      </div>
-      <button type="submit">Publicar Producto</button>
-    </form>
-  </div>
-  
+    </div>
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+    <div class="form-buttons">
+      <button type="submit">Publicar</button>
+    </div>
+  </form>
+</div>

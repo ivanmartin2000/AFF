@@ -23,13 +23,8 @@ export class MenuPrincipalComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.menuService.getMenuData().subscribe({
       next: (data) => {
-        // debugger;
         console.log(data);
-
-        console.log(data.favoritos);
-
-        
-        // Si data.Favoritos o data.Sugerencias son undefined, se asigna un array vacío.
+        // Aseguramos que si vienen undefined se asignen arrays vacíos.
         this.favoritos = data.favoritos ?? [];
         this.sugerencias = data.sugerencias ?? [];
         // Inicializa el timer para cada favorito que tenga productoSubasta
@@ -57,7 +52,6 @@ export class MenuPrincipalComponent implements OnInit, OnDestroy {
     return Math.max(0, Math.floor((end - now) / 1000));
   }
 
-  // Navegación
   goToProductoVenta(fav: VendedorFavorito): void {
     this.router.navigate(['/app/producto-compra'], { queryParams: { id: fav.idUsuario } });
   }
@@ -70,8 +64,9 @@ export class MenuPrincipalComponent implements OnInit, OnDestroy {
     this.router.navigate(['/app/producto-subasta'], { queryParams: { id: fav.idUsuario } });
   }
 
+  // Método actualizado para redirigir al perfil público
   goToPerfilVendedor(id: number): void {
-    this.router.navigate(['/app/perfil-usuario'], { queryParams: { id } });
+    this.router.navigate(['/app/perfil-publico'], { queryParams: { id } });
   }
 
   ngOnDestroy(): void {
