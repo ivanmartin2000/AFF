@@ -11,13 +11,17 @@
     </div>
     <div class="form-group">
       <label>Marca:</label>
-      <select formControlName="idMarca">
-        <option *ngFor="let marca of marcas" [value]="marca.idMarca">
-          {{ marca.descripcion }}
-        </option>
-      </select>
+      <div class="marca-select">
+        <select formControlName="idMarca">
+          <option *ngFor="let marca of marcas" [value]="marca.idMarca">
+            {{ marca.descripcion }}
+          </option>
+        </select>
+        <!-- Botón para abrir el popup de nueva marca -->
+        <button type="button" class="btn-agregar-marca" (click)="openAddMarcaPopup()">+ Agregar marca</button>
+      </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" *ngIf="!esSubasta">
       <label>Precio:</label>
       <input type="number" formControlName="precio">
     </div>
@@ -47,6 +51,15 @@
         <input type="number" formControlName="ofertaInicial">
       </div>
     </div>
+    <!-- Campos para mostrar ruta y nombre de imagen (solo lectura) -->
+    <div class="form-group">
+      <label>Ruta de la Imagen:</label>
+      <input type="text" formControlName="rutaImagen" placeholder="Ruta de la imagen" readonly>
+    </div>
+    <div class="form-group">
+      <label>Nombre de la Imagen:</label>
+      <input type="text" formControlName="nombreImagen" placeholder="Nombre de la imagen" readonly>
+    </div>
     <div *ngIf="errorMessage" class="error-message">
       {{ errorMessage }}
     </div>
@@ -54,4 +67,16 @@
       <button type="submit">Publicar</button>
     </div>
   </form>
+
+  <!-- Popup para Agregar Marca -->
+  <div class="popup-overlay" *ngIf="showAddMarcaPopup" (click)="closeAddMarcaPopup()"></div>
+  <div class="popup-content" *ngIf="showAddMarcaPopup">
+    <h2>Nueva Marca</h2>
+    <!-- ngModel para enlazar la descripción de la marca -->
+    <input [(ngModel)]="nuevaMarcaDesc" placeholder="Descripción de la marca" />
+    <div class="popup-buttons">
+      <button (click)="onAgregarMarca()">Guardar</button>
+      <button (click)="closeAddMarcaPopup()">Cancelar</button>
+    </div>
+  </div>
 </div>

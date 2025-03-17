@@ -1,6 +1,6 @@
 // src/app/productos.service.ts
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 export interface PublicarProductoRequest {
@@ -8,29 +8,13 @@ export interface PublicarProductoRequest {
   descripcion: string;
   precio: number;
   stock: number;
-  rutaImagen?: string;
-  nombreImagen?: string;
-  tipoPublicacion: string; // "venta" o "subasta"
-  fechaFinSubasta?: string; 
+  rutaImagen: string;
+  nombreImagen: string;
+  tipoPublicacion: string;
+  fechaFinSubasta?: string;
   ofertaInicial?: number;
-  idMarca: number;    // Marca seleccionada
-  idCategoria: number; // Opcional si deseas categoría
-}
-
-export interface Producto {
-  idProducto: number;
-  nombre: string;
-  descripcion: string;
-  precio: number;
-  stock: number;
-  rutaImagen?: string;
-  nombreImagen?: string;
-  activo: boolean;
-  fechaRegistro: string;
-  idUsuario: number;
-  fechaFin?: string | null;
-  idMarca: number; // FK con Marca
-  idCategoria: number; // FK con Categoría
+  idMarca: number;
+  idCategoria: number;
 }
 
 @Injectable({
@@ -41,7 +25,29 @@ export class ProductosService {
 
   constructor(private http: HttpClient) {}
 
-  publicarProducto(data: PublicarProductoRequest): Observable<Producto> {
-    return this.http.post<Producto>(`${this.baseUrl}/publicar`, data);
+  publicarProducto(request: PublicarProductoRequest & { imagen?: File }): Observable<any> {
+    const formData = new FormData();
+    formData.append('nombre', request.nombre);
+    formData.append('descripcion', request.descripcion);
+    formData.append('precio', request.precio.toString());
+    formData.append('stock', request.stock.toString());
+    // Los siguientes campos se enviarán siempre aunque vengan vacíos
+    formData.append('rutaImagen', request.rutaImagen || '/public/');
+    formData.append('nombreImagen', request.nombreImagen || 'default.png');
+    formData.append('tipoPublicacion', request.tipoPublicacion);
+    if (request.fechaFinSubasta) {
+      formData.append('fechaFinSubasta', request.fechaFinSubasta);
+    }
+    if (request.ofertaInicial !== undefined && request.ofertaInicial !== null) {
+      formData.append('ofertaInicial', request.ofertaInicial.toString());
+    }
+    formData.append('idMarca', request.idMarca.toString());
+    formData.append('idCategoria', request.idCategoria.toString());
+    // Si se ha seleccionado una imagen, la agregamos
+    if (request.imagen) {
+      formData.append('Imagen', request.imagen, request.imagen.name);
+    }
+
+    return this.http.post(`${this.baseUrl}/publicar`, formData);
   }
 }
