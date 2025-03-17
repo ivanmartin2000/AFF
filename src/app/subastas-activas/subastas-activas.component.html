@@ -1,0 +1,18 @@
+<div class="subastas-activas">
+    <h1>Subastas Activas</h1>
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    <div *ngIf="!subastas || subastas.length === 0">
+      <p>No hay subastas activas disponibles.</p>
+    </div>
+    <div class="producto-card" *ngFor="let subasta of subastas">
+      <h2>{{ subasta.nombre }}</h2>
+      <p><strong>Descripción:</strong> {{ subasta.descripcion }}</p>
+      <p><strong>Precio:</strong> ${{ subasta.precio }}</p>
+      <p><strong>Fecha Fin:</strong> {{ subasta.fechaFin | date:'short' }}</p>
+      <div class="imagen">
+        <!-- Usamos ?? para garantizar que si alguno es undefined se use '' -->
+        <img [src]="(subasta.rutaImagen ?? '') + (subasta.nombreImagen ?? '')" alt="{{ subasta.nombre }}" />
+      </div>
+    </div>
+  </div>
+  

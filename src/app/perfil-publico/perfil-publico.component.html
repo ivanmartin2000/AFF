@@ -1,24 +1,75 @@
-<div class="profile-page">
-    <!-- Encabezado con logo y botón para volver al menú principal -->
-    <header class="profile-header">
-      <img src="LogoAF.png" alt="Logo All For Fans" class="logo" (click)="goToMenuPrincipal()">
-      <button class="menu-button" (click)="goToMenuPrincipal()">Menú Principal</button>
-    </header>
-    
-    <div class="profile-container" *ngIf="usuario">
-      <h2>Perfil Público de {{ usuario.nombres }} {{ usuario.apellidos }}</h2>
-      
-      <!-- Datos públicos -->
-      <div class="attribute-list">
-        <label>Nombre de Usuario:</label>
-        <input type="text" [value]="usuario.nombres + ' ' + usuario.apellidos" disabled>
-        
-        <label>Correo Electrónico:</label>
-        <input type="email" [value]="usuario.correo" disabled>
-        
-        <label>Descripción:</label>
-        <textarea [value]="usuario.descripcion" disabled></textarea>
+<div class="perfil-publico" *ngIf="perfil; else errorTemplate">
+  <!-- Encabezado con fondo degradado y separación del menú lateral -->
+  <div class="header-gradient">
+    <div class="header-content">
+      <div class="info-usuario">
+        <h1>{{ perfil.usuario.nombreCompleto }}</h1>
+        <p>{{ perfil.usuario.descripcion }}</p>
+      </div>
+      <div class="imagen-usuario">
+        <img
+          *ngIf="perfil.usuario.imagenPerfil"
+          [src]="perfil.usuario.imagenPerfil"
+          alt="{{ perfil.usuario.nombreCompleto }}"
+        />
       </div>
     </div>
   </div>
-  
+
+  <!-- Botón de estrella para agregar a favoritos -->
+  <div class="favorite-container">
+    <i
+      class="fa"
+      [ngClass]="isFavorite ? 'fa-star' : 'fa-star-o'"
+      (click)="toggleFavorite()"
+      title="Agregar a favoritos"
+    ></i>
+  </div>
+
+  <div class="contenido">
+    <!-- Sección de productos en venta -->
+    <div class="section-venta">
+      <h2>Productos en Venta</h2>
+      <div *ngIf="!perfil.ventas || perfil.ventas.length === 0">
+        <p>No hay productos en venta.</p>
+      </div>
+      <div class="producto-card" *ngFor="let venta of perfil.ventas">
+        <h3>{{ venta.nombre }}</h3>
+        <p>{{ venta.descripcion }}</p>
+        <p><strong>Precio:</strong> ${{ venta.precio }}</p>
+        <div class="acciones">
+          <button (click)="onBuyNow(venta)">Comprar Ahora</button>
+          <button (click)="onAddToCart(venta)">Agregar al Carrito</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de productos en subasta -->
+    <div class="section-subasta">
+      <h2>Productos en Subasta</h2>
+      <div *ngIf="!perfil.subastas || perfil.subastas.length === 0">
+        <p>No hay productos en subasta.</p>
+      </div>
+      <div class="producto-card" *ngFor="let subasta of perfil.subastas">
+        <h3>{{ subasta.nombre }}</h3>
+        <p>{{ subasta.descripcion }}</p>
+        <p><strong>Precio actual:</strong> ${{ subasta.precio }}</p>
+        <p><strong>Fecha Fin:</strong> {{ subasta.fechaFin | date:'short' }}</p>
+        <div class="acciones">
+          <button (click)="onBid(subasta)">Pujar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #errorTemplate>
+  <p class="error-message">{{ errorMessage }}</p>
+</ng-template>
+
+<!-- Popup para fondos insuficientes -->
+<div class="popup-overlay" *ngIf="showInsufficientFundsPopup" (click)="closeInsufficientFundsPopup()"></div>
+<div class="popup-content" *ngIf="showInsufficientFundsPopup">
+  <p>Fondos insuficientes para participar en esta subasta. Por favor, agrega más fondos a tu billetera.</p>
+  <button (click)="closeInsufficientFundsPopup()">Cerrar</button>
+</div>

@@ -13,7 +13,7 @@ import { MenuService, VendedorFavorito, Sugerencia } from '../menu.service';
 export class MenuPrincipalComponent implements OnInit, OnDestroy {
   favoritos: VendedorFavorito[] = [];
   sugerencias: Sugerencia[] = [];
-  // Mapea el timer (en segundos) para cada vendedor que tenga producto en subasta
+  // Mapea el timer (en segundos) para cada favorito que tenga productoSubasta
   timers: { [key: number]: number } = {};
 
   private timerInterval: any;
@@ -24,9 +24,10 @@ export class MenuPrincipalComponent implements OnInit, OnDestroy {
     this.menuService.getMenuData().subscribe({
       next: (data) => {
         console.log(data);
-        // Aseguramos que si vienen undefined se asignen arrays vacíos.
+        // Se espera que el backend devuelva "favoritos" y "sugerencias" con la propiedad "idUsuario"
         this.favoritos = data.favoritos ?? [];
         this.sugerencias = data.sugerencias ?? [];
+
         // Inicializa el timer para cada favorito que tenga productoSubasta
         this.favoritos.forEach(fav => {
           if (fav.productoSubasta && fav.productoSubasta.fechaFin) {
@@ -37,6 +38,7 @@ export class MenuPrincipalComponent implements OnInit, OnDestroy {
       error: err => console.error("Error al cargar datos del menú:", err)
     });
   
+    // Actualiza el timer cada segundo
     this.timerInterval = setInterval(() => {
       this.favoritos.forEach(fav => {
         if (fav.productoSubasta && fav.productoSubasta.fechaFin) {
@@ -64,11 +66,15 @@ export class MenuPrincipalComponent implements OnInit, OnDestroy {
     this.router.navigate(['/app/producto-subasta'], { queryParams: { id: fav.idUsuario } });
   }
 
-  // Método actualizado para redirigir al perfil público
+  // Navega al perfil público del vendedor usando su idUsuario
   goToPerfilVendedor(id: number): void {
-    this.router.navigate(['/app/perfil-publico'], { queryParams: { id } });
+    if (!id) {
+      console.error('El id del vendedor es undefined');
+      return;
+    }
+    this.router.navigate(['/app/perfil-publico', id]);
   }
-
+  
   ngOnDestroy(): void {
     clearInterval(this.timerInterval);
   }

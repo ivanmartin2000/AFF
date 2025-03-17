@@ -14,13 +14,13 @@ export interface ProductoSubasta {
   imagen: string;
   descripcion: string;
   precio: number;
-  fechaFin: string; // Se recibe como string, se convertirá a Date en el componente si es necesario
+  fechaFin: string; // Se recibe como string y se convertirá a Date en el componente si es necesario
   rutaImagen?: string;
   nombreImagen?: string;
 }
 
 export interface VendedorFavorito {
-  idUsuario: number;
+  idUsuario: number;  // Usamos idUsuario
   nombre: string;
   imagenPerfil: string;
   descripcion: string;
@@ -28,8 +28,9 @@ export interface VendedorFavorito {
   productoSubasta?: ProductoSubasta | null;
 }
 
+
 export interface Sugerencia {
-  idUsuario: number;
+  idUsuario: number;  // Usamos idUsuario
   nombre: string;
   imagenPerfil: string;
 }
@@ -51,13 +52,12 @@ export class MenuService {
   constructor(private http: HttpClient) {}
 
   getMenuData(): Observable<MenuData> {
-    // Se asume que el endpoint devuelve un objeto con las propiedades Favoritos y Sugerencias
+    // Se asume que el endpoint devuelve un objeto con propiedades "favoritos" y "sugerencias"
     return this.http.get<MenuData>('/api/menu/principal');
   }
 
-   // Nuevo método para obtener las categorías con la URL correcta
+  // Método para obtener las categorías
   getCategorias(): Observable<Categoria[]> {
     return this.http.get<Categoria[]>('/api/menu/categorias');
   }
-
 }

@@ -1,0 +1,27 @@
+.carrito {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+
+  h1 {
+    color: #7f53ac;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .carrito-item {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+    p {
+      margin: 5px 0;
+    }
+  }
+
+  .error-message {
+    color: red;
+    text-align: center;
+  }
+}
