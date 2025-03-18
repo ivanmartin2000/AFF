@@ -99,27 +99,27 @@ $secondary: #647dee;
 
 /* Menú Lateral */
 .side-menu {
-  position: fixed;
   top: 60px; /* debajo de la top-bar */
   left: 0;
   width: 60px;
-  height: calc(100vh - 60px);
-  background: #f4f4f4;
+  height: calc(150vh - 60px);
+  background: linear-gradient(
+    135deg,
+    #7f53ac,
+    #647dee);
   overflow-y: auto;
   transition: width 0.3s ease;
   z-index: 999;
 
   &.open {
-    width: 200px;
+    width: 180px;
   }
 
   /* Botón para abrir/cerrar menú */
   .toggle-menu-btn {
-    background: $secondary;
-    color: #fff;
+    margin-left: 15px;
     border: none;
     padding: 8px;
-    margin: 10px;
     border-radius: 4px;
     cursor: pointer;
     display: flex;
@@ -127,9 +127,9 @@ $secondary: #647dee;
     gap: 4px;
     font-size: 1rem;
 
-    &:hover {
-      background: color.adjust($secondary, $lightness: -10%);
-    }
+    // &:hover {
+    //   background: color.adjust($secondary, $lightness: -10%);
+    // }
   }
 
   ul {
@@ -144,11 +144,12 @@ $secondary: #647dee;
         gap: 6px;
         background: transparent;
         border: none;
-        color: #333;
+        color: white;
         padding: 10px;
         cursor: pointer;
         font-size: 0.95rem;
         text-align: left;
+        margin-left: 10px;
 
         &:hover {
           background: #ddd;

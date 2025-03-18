@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MenuService, VendedorFavorito, Sugerencia } from '../menu.service';
@@ -13,18 +13,17 @@ import { MenuService, VendedorFavorito, Sugerencia } from '../menu.service';
 export class MenuPrincipalComponent implements OnInit, OnDestroy {
   favoritos: VendedorFavorito[] = [];
   sugerencias: Sugerencia[] = [];
+  
   // Mapea el timer (en segundos) para cada favorito que tenga productoSubasta
-  timers: { [key: number]: number } = {};
+  timers: { [key: number]: number } = {}; 
+  private intervalId: any;
 
-  private timerInterval: any;
-
-  constructor(private router: Router, private menuService: MenuService) {}
+  constructor(private router: Router, private menuService: MenuService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.menuService.getMenuData().subscribe({
       next: (data) => {
         console.log(data);
-        // Se espera que el backend devuelva "favoritos" y "sugerencias" con la propiedad "idUsuario"
         this.favoritos = data.favoritos ?? [];
         this.sugerencias = data.sugerencias ?? [];
 
@@ -39,12 +38,21 @@ export class MenuPrincipalComponent implements OnInit, OnDestroy {
     });
   
     // Actualiza el timer cada segundo
-    this.timerInterval = setInterval(() => {
+    this.intervalId = setInterval(() => {
+      let cambios = false;
       this.favoritos.forEach(fav => {
         if (fav.productoSubasta && fav.productoSubasta.fechaFin) {
-          this.timers[fav.idUsuario] = this.calculateTimer(new Date(fav.productoSubasta.fechaFin));
+          const nuevoTiempo = this.calculateTimer(new Date(fav.productoSubasta.fechaFin));
+          if (this.timers[fav.idUsuario] !== nuevoTiempo) {
+            this.timers[fav.idUsuario] = nuevoTiempo;
+            cambios = true;
+          }
         }
       });
+      
+      if (cambios) {
+        this.cdr.detectChanges();
+      }
     }, 1000);
   }
 
@@ -66,7 +74,6 @@ export class MenuPrincipalComponent implements OnInit, OnDestroy {
     this.router.navigate(['/app/producto-subasta'], { queryParams: { id: fav.idUsuario } });
   }
 
-  // Navega al perfil público del vendedor usando su idUsuario
   goToPerfilVendedor(id: number): void {
     if (!id) {
       console.error('El id del vendedor es undefined');
@@ -76,6 +83,8 @@ export class MenuPrincipalComponent implements OnInit, OnDestroy {
   }
   
   ngOnDestroy(): void {
-    clearInterval(this.timerInterval);
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
   }
 }

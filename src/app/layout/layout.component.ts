@@ -123,4 +123,5 @@ export class LayoutComponent implements OnInit {
     // Ajusta la lógica para extraer el ID del token, etc.
     return 1; // Ejemplo
   }
+  
 }

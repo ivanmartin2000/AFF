@@ -6,9 +6,9 @@ $card-bg: #fff;
 
 .profile-page {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: $background;
   min-height: 100vh;
   padding: 20px;
+  margin-top: -1600px;
 
   .profile-header {
     display: flex;

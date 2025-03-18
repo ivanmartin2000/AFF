@@ -19,11 +19,11 @@ export interface ProductoSubasta {
   providedIn: 'root'
 })
 export class ProductoSubastaService {
-  private baseUrl = '/api/subastas';
+  private baseUrl = '/api/ProductosPublicados';
 
   constructor(private http: HttpClient) {}
 
   getProductosSubasta(): Observable<ProductoSubasta[]> {
-    return this.http.get<ProductoSubasta[]>(`${this.baseUrl}/publicados`);
+    return this.http.get<ProductoSubasta[]>(`${this.baseUrl}`);
   }
 }

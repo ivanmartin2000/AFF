@@ -16,17 +16,26 @@ export class CarritoComponent implements OnInit {
   constructor(private carritoService: CarritoService) {}
 
   ngOnInit(): void {
-    const idUsuario = Number(localStorage.getItem('idUsuario'));
-    if (idUsuario) {
-      this.carritoService.getCarritoByUser(idUsuario).subscribe({
+      //PEDILE A CHATGPT O MEJOR HACELO VOS CON TUS CONOCIMIENTOS
+      // QUE DONDE DICE EL ID "26" DEBERIA IR EL ID DE USUARIO DE LA SESION. PEDILE QUE EN TODO TU HISTORIAL
+      //REVISE COMO PUEDE TOMAR EL ID DEL USUARIO QUE ESTÁ EN LA SESION PARA PASARLO POR AHÍ
+
+      //! ACORDATE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      //? QUE SE DEBE PASAR UN ENTERO!!! ENTERO ES UN NUMERO DEL [1 - INFINITO] SI SABES TANTO HUBIESES HECHO
+      //! ESTO SOLO PEDAZO DE PUTO
+
+      // MAS VALE QUE ESTE HEHCO PARA MAÑANA
+
+      //? SALUDOS
+
+
+      this.carritoService.getCarritoByUser(26).subscribe({
         next: (items) => this.carritoItems = items,
         error: (err) => {
           console.error("Error al cargar el carrito:", err);
           this.errorMessage = "No se pudo cargar el carrito.";
         }
       });
-    } else {
-      this.errorMessage = "No se encontró el ID de usuario.";
-    }
-  }
+    } 
 }
+

@@ -1,12 +1,35 @@
 <div class="producto-subasta">
-  <h1>Productos en Subasta</h1>
+  <h1>Mis productos en Subasta</h1>
+
   <div class="producto-card" *ngFor="let producto of productos">
     <h2>{{ producto.nombre }}</h2>
     <p>{{ producto.descripcion }}</p>
     <p><strong>Precio actual:</strong> ${{ producto.precio }}</p>
-    <p><strong>Tiempo restante:</strong> {{ producto.fechaFin | countdown }}</p>
-    <img *ngIf="producto.rutaImagen && producto.nombreImagen" [src]="producto.rutaImagen + producto.nombreImagen" alt="{{ producto.nombre }}" />
-    <button (click)="openBidModal(producto)">Pujar</button>
+    
+    <p *ngIf="timers[producto.idProducto]">
+      <strong>Tiempo restante:</strong>
+      {{ timers[producto.idProducto]?.horas ?? 0 }}h :
+      {{ timers[producto.idProducto]?.minutos ?? 0 }}m :
+      {{ timers[producto.idProducto]?.segundos ?? 0 }}s
+    </p>
+    
+
+    <p *ngIf="timers[producto.idProducto].horas === 0 &&
+              timers[producto.idProducto].minutos === 0 &&
+              timers[producto.idProducto].segundos === 0" class="expired">
+      ⏳ Subasta Finalizada
+    </p>
+
+    <img *ngIf="producto.rutaImagen && producto.nombreImagen"
+         [src]="producto.rutaImagen + producto.nombreImagen"
+         alt="{{ producto.nombre }}" />
+
+    <button (click)="openBidModal(producto)"
+            [disabled]="timers[producto.idProducto].horas === 0 &&
+                       timers[producto.idProducto].minutos === 0 &&
+                       timers[producto.idProducto].segundos === 0">
+      Pujar
+    </button>
   </div>
 </div>
 
