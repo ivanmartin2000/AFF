@@ -1,11 +1,26 @@
+<!-- Barra superior (top-bar) -->
 <div class="top-bar">
   <div class="top-bar-left">
-    <button (click)="navigateTo('/subastas-semana')">Ver Productos en venta</button>
-    <button (click)="navigateTo('/ranking-subastas')">Ranking Subastas</button>
-    <button (click)="navigateTo('/ranking-vendedores')">Ranking Vendedores</button>
-    
+    <button (click)="navigateTo('/productos-activos')">
+      <fa-icon [icon]="faStore"></fa-icon>
+      <span>Ver Productos en venta</span>
+    </button>
+
+    <button (click)="navigateTo('/ranking-subastas')">
+      <fa-icon [icon]="faChartLine"></fa-icon>
+      <span>Ranking Subastas</span>
+    </button>
+
+    <button (click)="navigateTo('/ranking-vendedores')">
+      <fa-icon [icon]="faMedal"></fa-icon>
+      <span>Ranking Vendedores</span>
+    </button>
+
     <div class="dropdown">
-      <button class="dropdown-toggle" (click)="toggleCategories()">Categorías</button>
+      <button class="dropdown-toggle" (click)="toggleCategories()">
+        <fa-icon [icon]="faThList"></fa-icon>
+        <span>Categorías</span>
+      </button>
       <div class="dropdown-menu" *ngIf="showCategories">
         <ul>
           <li *ngFor="let category of categories">
@@ -14,77 +29,78 @@
         </ul>
       </div>
     </div>
-    
-    <button (click)="navigateTo('/app/subastas-activas')">Ver Subastas</button>
-  
+
+    <button (click)="navigateTo('/app/subastas-activas')">
+      <fa-icon [icon]="faGavel"></fa-icon>
+      <span>Ver Subastas</span>
+    </button>
   </div>
-  
-  <!-- Botón moderno para mostrar el monto disponible -->
+
+  <!-- Botón para mostrar el monto disponible -->
   <button class="btn-wallet" (click)="mostrarDetallesBilletera()">
-    Monto disponible: <span>{{ billetera?.monto | currency:'ARS':'symbol':'1.2-2' }}</span>
+    <fa-icon [icon]="faWallet"></fa-icon>
+    <span>{{ billetera?.monto | currency:'ARS':'symbol':'1.2-2' }}</span>
   </button>
-  
+
   <div class="top-bar-right">
     <img src="LogoAF.png" alt="Logo All For Fans" class="logo">
   </div>
 </div>
 
-<!-- Botón para abrir/ocultar el menú lateral -->
-<div>
-  <button class="toggle-menu-btn" style="left: 8px;" (click)="toggleSideMenu()">
-    {{ isSideMenuOpen ? 'X' : '☰' }}
-  </button>
-</div>
-
-<!-- Menú Lateral -->
+<!-- Menú Lateral unificado -->
 <div class="side-menu" [class.open]="isSideMenuOpen">
+  <!-- Botón para abrir/ocultar el menú lateral, ahora dentro del side-menu -->
+  <button class="toggle-menu-btn" (click)="toggleSideMenu()">
+    <fa-icon *ngIf="!isSideMenuOpen" [icon]="faBars"></fa-icon>
+    <fa-icon *ngIf="isSideMenuOpen" [icon]="faTimes"></fa-icon>
+  </button>
+
   <ul>
     <li>
-      <button style="margin-top: 50px;" (click)="navigateTo('/app/perfil-usuario')">
-        <span class="icon">👤</span>
+      <button (click)="navigateTo('/app/perfil-usuario')">
+        <fa-icon [icon]="faUser"></fa-icon>
         <span class="text" *ngIf="isSideMenuOpen">Perfil de Usuario</span>
       </button>
     </li>
     <li>
       <button (click)="navigateTo('/app/productos-comprados')">
-        <span class="icon">🛒</span>
+        <fa-icon [icon]="faShoppingCart"></fa-icon>
         <span class="text" *ngIf="isSideMenuOpen">Comprados</span>
       </button>
     </li>
     <li>
       <button (click)="navigateTo('/app/productos-vendidos')">
-        <span class="icon">💰</span>
+        <fa-icon [icon]="faMoneyBillWave"></fa-icon>
         <span class="text" *ngIf="isSideMenuOpen">Vendidos</span>
       </button>
     </li>
     <li>
       <button (click)="navigateTo('/app/productos-publicados')">
-        <span class="icon">🏷️</span>
+        <fa-icon [icon]="faTag"></fa-icon>
         <span class="text" *ngIf="isSideMenuOpen">En Venta</span>
       </button>
     </li>
     <li>
       <button (click)="navigateTo('/app/producto-subasta')">
-        <span class="icon">🔨</span>
+        <fa-icon [icon]="faGavel"></fa-icon>
         <span class="text" *ngIf="isSideMenuOpen">En Subasta</span>
       </button>
     </li>
     <li>
       <button (click)="navigateTo('/app/publicar-producto')">
-        <span class="icon">➕</span>
+        <fa-icon [icon]="faPlus"></fa-icon>
         <span class="text" *ngIf="isSideMenuOpen">Publicar</span>
       </button>
     </li>
     <li>
       <button (click)="navigateTo('/app/ver-envios')">
-        <span class="icon">🚚</span>
+        <fa-icon [icon]="faTruck"></fa-icon>
         <span class="text" *ngIf="isSideMenuOpen">Envíos</span>
       </button>
     </li>
-    <!-- Nuevo botón de carrito -->
     <li>
       <button (click)="navigateTo('/app/carrito')">
-        <span class="icon">🛒</span>
+        <fa-icon [icon]="faCartShopping"></fa-icon>
         <span class="text" *ngIf="isSideMenuOpen">Carrito</span>
       </button>
     </li>
@@ -99,4 +115,16 @@
 <!-- Contenido de la página -->
 <div class="content">
   <router-outlet></router-outlet>
+</div>
+
+<!-- Panel derecho (para sugerencias, búsqueda u otra info extra) -->
+<div class="right-panel">
+  <div class="search-bar">
+    <input type="text" placeholder="Buscar publicaciones..." />
+    <fa-icon [icon]="faSearch"></fa-icon>
+  </div>
+  <div class="extra-info">
+    <h3>Sugerencias</h3>
+    <!-- Aquí puedes agregar contenido extra -->
+  </div>
 </div>

@@ -1,19 +1,66 @@
 <div class="dashboard">
-    <h1>Dashboard</h1>
-    <div class="metrics-grid">
-      <div class="metric-card" *ngFor="let metric of metrics">
-        <div class="icon">{{ metric.icon }}</div>
-        <div class="info">
-          <h2>{{ metric.title }}</h2>
-          <p>{{ metric.value }}</p>
-        </div>
-      </div>
+  <h1>Dashboard</h1>
+
+  <!-- Asegúrate de tener la variable 'data' con tus métricas -->
+  <div *ngIf="data" class="metrics-grid">
+    
+    <!-- Contenedor 1: Mejor Vendedor -->
+    <div class="metric-card">
+      <h2>Mejor Vendedor</h2>
+      <p>{{ data.metrics.mejorVendedor.nombre }} - ${{ data.metrics.mejorVendedor.monto }}</p>
     </div>
-    <div class="charts">
-      <div class="chart" *ngFor="let chart of [1,2,3,4,5,6,7]">
-        <h3>Gráfico {{ chart }}</h3>
-        <div class="chart-placeholder">[Gráfico de Métricas]</div>
-      </div>
+
+    <!-- Contenedor 2: Mejor Comprador -->
+    <div class="metric-card">
+      <h2>Mejor Comprador</h2>
+      <p>{{ data.metrics.mejorComprador.nombre }} - ${{ data.metrics.mejorComprador.monto }}</p>
     </div>
+
+    <!-- Contenedor 3: Ranking Subastas -->
+    <div class="metric-card">
+      <h2>Ranking Subastas</h2>
+      <ul>
+        <li *ngFor="let rs of data.metrics.rankingSubastas">
+          Producto: {{ rs.idProducto }}, Precio Final: {{ rs.precioFinal }}
+        </li>
+      </ul>
+    </div>
+
+    <!-- Contenedor 4: Ventas Mensuales (click para ver gráfico) -->
+    <div class="metric-card" (click)="onMetricClick('monthlyVentas')">
+      <h2>Ventas Mensuales</h2>
+      <p>Haz click para ver el gráfico</p>
+    </div>
+
+    <!-- Contenedor 5: Productos Vendidos por mes -->
+    <div class="metric-card" (click)="onMetricClick('monthlyProductos')">
+      <h2>Productos Vendidos / Mes</h2>
+      <p>Haz click para ver el gráfico</p>
+    </div>
+
+    <!-- Contenedor 6: Subastas finalizadas por mes -->
+    <div class="metric-card" (click)="onMetricClick('monthlySubastas')">
+      <h2>Subastas Finalizadas / Mes</h2>
+      <p>Haz click para ver el gráfico</p>
+    </div>
+
+    <!-- Si deseas un 7mo contenedor, agrégalo aquí -->
+    <!-- <div class="metric-card" (click)="onMetricClick('otraMetrica')">
+      <h2>Otra Métrica</h2>
+      <p>Haz click para ver el gráfico</p>
+    </div> -->
+
   </div>
-  
+
+  <!-- Popup con el canvas (para mostrar los gráficos) -->
+  <div class="popup-overlay" *ngIf="showChartPopup" (click)="closeChartPopup()"></div>
+  <div class="popup-content" *ngIf="showChartPopup">
+    <button class="close-btn" (click)="closeChartPopup()">X</button>
+    <canvas #chartCanvas></canvas>
+  </div>
+
+  <!-- Mensaje de error si ocurre -->
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+</div>
