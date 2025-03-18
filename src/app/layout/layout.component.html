@@ -1,6 +1,7 @@
-<!-- Barra superior (top-bar) -->
+<!-- Barra superior -->
 <div class="top-bar">
   <div class="top-bar-left">
+    <!-- Botones horizontales -->
     <button (click)="navigateTo('/productos-activos')">
       <fa-icon [icon]="faStore"></fa-icon>
       <span>Ver Productos en venta</span>
@@ -36,20 +37,41 @@
     </button>
   </div>
 
-  <!-- Botón para mostrar el monto disponible -->
-  <button class="btn-wallet" (click)="mostrarDetallesBilletera()">
-    <fa-icon [icon]="faWallet"></fa-icon>
-    <span>{{ billetera?.monto | currency:'ARS':'symbol':'1.2-2' }}</span>
-  </button>
-
+  <!-- Búsqueda + Billetera + Logo -->
   <div class="top-bar-right">
-    <img src="LogoAF.png" alt="Logo All For Fans" class="logo">
+    <!-- Caja de búsqueda -->
+    <div class="search-box">
+      <input
+        type="text"
+        placeholder="Buscar..."
+        [(ngModel)]="searchQuery"
+        (keyup.enter)="onSearch()"
+      />
+      <button (click)="onSearch()">
+        <fa-icon [icon]="faSearch"></fa-icon>
+      </button>
+    </div>
+
+    <!-- Botón para mostrar billetera -->
+    <button class="btn-wallet" (click)="mostrarDetallesBilletera()">
+      <fa-icon [icon]="faWallet"></fa-icon>
+      <span>{{ billetera?.monto | currency:'ARS':'symbol':'1.2-2' }}</span>
+    </button>
+
+    <!-- Logo a la derecha -->
+    <img src="LogoAF.png" alt="Logo All For Fans" class="logo" />
   </div>
 </div>
 
-<!-- Menú Lateral unificado -->
+<!-- Menú Lateral -->
 <div class="side-menu" [class.open]="isSideMenuOpen">
-  <!-- Botón para abrir/ocultar el menú lateral, ahora dentro del side-menu -->
+  <!-- Perfil del usuario logueado -->
+  <div class="profile-block">
+    <img [src]="userProfileImage" alt="Perfil" class="profile-image" />
+    <h3 *ngIf="isSideMenuOpen">{{ userName }}</h3>
+  </div>
+
+  <!-- Botón para abrir/cerrar menú lateral -->
   <button class="toggle-menu-btn" (click)="toggleSideMenu()">
     <fa-icon *ngIf="!isSideMenuOpen" [icon]="faBars"></fa-icon>
     <fa-icon *ngIf="isSideMenuOpen" [icon]="faTimes"></fa-icon>
@@ -59,55 +81,55 @@
     <li>
       <button (click)="navigateTo('/app/perfil-usuario')">
         <fa-icon [icon]="faUser"></fa-icon>
-        <span class="text" *ngIf="isSideMenuOpen">Perfil de Usuario</span>
+        <span *ngIf="isSideMenuOpen">Perfil de Usuario</span>
       </button>
     </li>
     <li>
       <button (click)="navigateTo('/app/productos-comprados')">
         <fa-icon [icon]="faShoppingCart"></fa-icon>
-        <span class="text" *ngIf="isSideMenuOpen">Comprados</span>
+        <span *ngIf="isSideMenuOpen">Comprados</span>
       </button>
     </li>
     <li>
       <button (click)="navigateTo('/app/productos-vendidos')">
         <fa-icon [icon]="faMoneyBillWave"></fa-icon>
-        <span class="text" *ngIf="isSideMenuOpen">Vendidos</span>
+        <span *ngIf="isSideMenuOpen">Vendidos</span>
       </button>
     </li>
     <li>
       <button (click)="navigateTo('/app/productos-publicados')">
         <fa-icon [icon]="faTag"></fa-icon>
-        <span class="text" *ngIf="isSideMenuOpen">En Venta</span>
+        <span *ngIf="isSideMenuOpen">En Venta</span>
       </button>
     </li>
     <li>
       <button (click)="navigateTo('/app/producto-subasta')">
         <fa-icon [icon]="faGavel"></fa-icon>
-        <span class="text" *ngIf="isSideMenuOpen">En Subasta</span>
+        <span *ngIf="isSideMenuOpen">En Subasta</span>
       </button>
     </li>
     <li>
       <button (click)="navigateTo('/app/publicar-producto')">
         <fa-icon [icon]="faPlus"></fa-icon>
-        <span class="text" *ngIf="isSideMenuOpen">Publicar</span>
+        <span *ngIf="isSideMenuOpen">Publicar</span>
       </button>
     </li>
     <li>
       <button (click)="navigateTo('/app/ver-envios')">
         <fa-icon [icon]="faTruck"></fa-icon>
-        <span class="text" *ngIf="isSideMenuOpen">Envíos</span>
+        <span *ngIf="isSideMenuOpen">Envíos</span>
       </button>
     </li>
     <li>
       <button (click)="navigateTo('/app/carrito')">
         <fa-icon [icon]="faCartShopping"></fa-icon>
-        <span class="text" *ngIf="isSideMenuOpen">Carrito</span>
+        <span *ngIf="isSideMenuOpen">Carrito</span>
       </button>
     </li>
   </ul>
 </div>
 
-<!-- Botón "Volver al Menú Principal" -->
+<!-- Botón flotante "Volver al Menú Principal" -->
 <div class="back-to-menu">
   <button (click)="navigateTo('app/menu-principal')">Volver al Menú Principal</button>
 </div>
@@ -117,3 +139,5 @@
   <router-outlet></router-outlet>
 </div>
 
+<!-- Footer degradado invertido -->
+<footer class="footer-bar"></footer>
