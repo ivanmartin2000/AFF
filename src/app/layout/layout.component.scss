@@ -1,215 +1,227 @@
+@use 'sass:color';
+
 $primary: #7f53ac;
 $secondary: #647dee;
-@use "sass:color";
 
+/* Barra superior */
 .top-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-  background-color: $secondary;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
-  z-index: 200;
+  justify-content: space-between;
+  background: linear-gradient(135deg, $primary, $secondary);
+  padding: 10px 20px;
+  color: #fff;
 
   .top-bar-left {
     display: flex;
     align-items: center;
+    gap: 10px;
 
     button {
       background: transparent;
       border: none;
       color: #fff;
-      padding: 10px;
-      font-size: 14px;
-      margin: 0 5px;
+      font-size: 0.95rem;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
       &:hover {
-        background-color: color.adjust($secondary, $lightness: 10%);
-        border-radius: 5px;
+        text-decoration: underline;
       }
     }
 
-    // Estilos para el dropdown de Categorías
     .dropdown {
       position: relative;
-      display: inline-block;
-      margin: 0 5px;
-
       .dropdown-toggle {
-        background: transparent;
-        border: none;
-        color: #fff;
-        padding: 10px;
-        font-size: 14px;
-        cursor: pointer;
+        display: flex;
+        align-items: center;
       }
-
       .dropdown-menu {
         position: absolute;
-        top: 100%; // Justo debajo del botón
+        top: 100%;
         left: 0;
         background: #fff;
-        border-radius: 5px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        z-index: 300;
-        padding: 5px 0;
-        min-width: 150px;
+        color: #333;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 8px;
+        display: none;
 
         ul {
           list-style: none;
-          padding: 0;
           margin: 0;
-
+          padding: 0;
           li {
-            width: 100%;
-
+            margin-bottom: 5px;
             button {
-              width: 100%;
               background: transparent;
               border: none;
-              padding: 10px;
-              text-align: left;
-              font-size: 14px;
-              cursor: pointer;
               color: #333;
+              cursor: pointer;
               &:hover {
-                background-color: #f1f1f1;
+                text-decoration: underline;
               }
             }
           }
         }
       }
     }
+
+    &:hover .dropdown-menu {
+      display: block;
+    }
   }
-  
+
+  .btn-wallet {
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: #fff;
+    font-size: 0.9rem;
+    padding: 6px 10px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    &:hover {
+      background: rgba(255,255,255,0.2);
+    }
+  }
+
   .top-bar-right {
     .logo {
-      width: 80px;
-      cursor: pointer;
+      height: 40px;
     }
   }
 }
 
-.toggle-menu-btn {
-  position: fixed;
-  top: 70px; // Debajo de la top-bar
-  left: 20px;
-  z-index: 210;
-  background-color: $primary;
-  border: none;
-  color: #fff;
-  padding: 10px;
-  font-size: 20px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
+/* Menú Lateral */
 .side-menu {
   position: fixed;
-  top: 60px; // Debajo de la top-bar
+  top: 60px; /* debajo de la top-bar */
   left: 0;
-  width: 60px; // Ancho mínimo (solo íconos)
-  height: calc(100% - 60px);
-  background-color: $primary;
-  color: #fff;
-  overflow: hidden;
-  transition: width 0.3s ease, padding 0.3s ease;
-  z-index: 150;
-  padding: 20px 5px;
+  width: 60px;
+  height: calc(100vh - 60px);
+  background: #f4f4f4;
+  overflow-y: auto;
+  transition: width 0.3s ease;
+  z-index: 999;
 
   &.open {
-    width: 250px; // Ancho al desplegar
-    padding: 20px; // Se aumenta el padding cuando está abierto
+    width: 200px;
+  }
+
+  /* Botón para abrir/cerrar menú */
+  .toggle-menu-btn {
+    background: $secondary;
+    color: #fff;
+    border: none;
+    padding: 8px;
+    margin: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 1rem;
+
+    &:hover {
+      background: color.adjust($secondary, $lightness: -10%);
+    }
   }
 
   ul {
     list-style: none;
-    padding: 0;
     margin: 0;
-    
+    padding: 0;
     li {
-      margin-bottom: 10px;
-      
       button {
         width: 100%;
-        background: transparent;
-        border: none;
-        color: #fff;
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 6px;
+        background: transparent;
+        border: none;
+        color: #333;
         padding: 10px;
-        font-size: 16px;
         cursor: pointer;
+        font-size: 0.95rem;
+        text-align: left;
+
         &:hover {
-          background-color: $secondary;
-        }
-        .icon {
-          font-size: 20px;
-          width: 24px;
-          text-align: center;
-        }
-        .text {
-          flex: 1;
+          background: #ddd;
         }
       }
     }
   }
 }
 
-.content {
-  margin-top: 70px; // Espacio para la barra superior
-  padding: 20px;
-  transition: margin-left 0.3s ease;
-}
-
-/* Botón moderno para mostrar el monto disponible */
-.btn-wallet {
-  background: linear-gradient(145deg, #1e90ff, #00bfff);
-  color: #fff;
-  border: none;
-  padding: 12px 24px;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.btn-wallet:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
-}
-
-.btn-wallet:active {
-  transform: translateY(0);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
+/* Botón "Volver al Menú Principal" */
 .back-to-menu {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  z-index: 210;
-  
+
   button {
-    background-color: $primary;
+    background: $secondary;
     color: #fff;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 8px 12px;
+    border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 0.9rem;
     &:hover {
-      background-color: $secondary;
+      background: color.adjust($secondary, $lightness: -10%);
+    }
+  }
+}
+
+/* Contenido de la página */
+.content {
+  margin-left: 60px; /* espacio side-menu cerrado */
+  margin-top: 60px;  /* espacio para la top-bar */
+  padding: 20px;
+  transition: margin-left 0.3s ease;
+
+  /* Si side-menu está abierto, mayor margen */
+  .side-menu.open + & {
+    margin-left: 200px;
+  }
+}
+
+/* Panel derecho */
+.right-panel {
+  position: fixed;
+  top: 60px;
+  right: 0;
+  width: 300px;
+  height: calc(100vh - 60px);
+  background: #fafafa;
+  border-left: 1px solid #ddd;
+  padding: 20px;
+  overflow-y: auto;
+
+  .search-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    input {
+      flex: 1;
+      background: #eee;
+      border: none;
+      color: #333;
+      padding: 8px;
+      border-radius: 4px;
+      margin-right: 10px;
+      &:focus {
+        outline: 2px solid $secondary;
+      }
+    }
+    fa-icon {
+      font-size: 1.2rem;
+      cursor: pointer;
     }
   }
 }
