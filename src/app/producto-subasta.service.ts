@@ -23,7 +23,8 @@ export class ProductoSubastaService {
 
   constructor(private http: HttpClient) {}
 
-  getProductosSubasta(): Observable<ProductoSubasta[]> {
-    return this.http.get<ProductoSubasta[]>(`${this.baseUrl}`);
+  getProductosSubastaPorUsuario(idUsuario: number): Observable<any> {
+    return this.http.get<any>(`/api/subastas/por-usuario/${idUsuario}`);
   }
+
 }

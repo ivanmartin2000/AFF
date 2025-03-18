@@ -66,13 +66,17 @@ export class SubastasActivasComponent implements OnInit, OnDestroy {
     };
 
     this.pujaService.realizarPuja(request).subscribe({
-      next: () => {
-        alert('Puja realizada con éxito.');
+      next: (response) => {
+        // Si el backend devuelve un mensaje, lo usamos en lugar del genérico
+        const successMessage = response.message || 'Puja realizada con éxito.';
+        alert(successMessage);
         this.closeBidModal();
         this.ngOnInit(); // Recargar las subastas activas
       },
-      error: () => {
-        this.errorMessage = 'Error al realizar la puja. Inténtalo de nuevo.';
+      error: (err) => {
+        // Asegurarse de que el mensaje de error se obtenga del backend, si existe
+        const errorMessage = err.error?.message || 'Error al realizar la puja. Inténtalo de nuevo.';
+        this.errorMessage = errorMessage;
       }
     });
   }

@@ -22,18 +22,20 @@ export interface Tarjeta {
   // Agrega otros campos si es necesario (ej. CVV, etc.)
 }
 
-// Interfaz para el perfil del usuario
 export interface UsuarioPerfil {
-  idUsuario: number;
-  nombres: string;
-  apellidos: string;
-  correo: string;
-  imagenPerfil?: string;
-  descripcion?: string;
-  // Las direcciones y tarjetas se obtienen del backend
+  usuario: {
+    idUsuario: number;
+    nombres: string;
+    apellidos: string;
+    correo: string;
+    imagenPerfil?: string;
+    descripcion?: string;
+  };
   direcciones?: Direccion[];
   tarjetas?: Tarjeta[];
 }
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -41,10 +43,10 @@ export interface UsuarioPerfil {
 export class PerfilService {
   constructor(private http: HttpClient) {}
 
-  // Para obtener el perfil del usuario logueado
-  getPerfilUsuario(): Observable<UsuarioPerfil> {
-    return this.http.get<UsuarioPerfil>('/api/usuarios/perfil'); // Asegúrate de tener este endpoint implementado en el backend
+  getPerfilUsuario(idUsuario: number): Observable<UsuarioPerfil> {
+    return this.http.get<UsuarioPerfil>(`/api/usuarios/perfil-usuario/${idUsuario}`); // Pasar el ID del usuario al backend
   }
+
 
   // Para obtener el perfil público de otro usuario (recibe su id como parámetro)
   getPerfilPublico(id: number): Observable<UsuarioPerfil> {

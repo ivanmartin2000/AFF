@@ -119,9 +119,18 @@ export class LayoutComponent implements OnInit {
   }
 
   navigateToCategory(category: Categoria): void {
-    this.router.navigate(['/categorias', category.id]);
-    this.showCategories = false;
-  }
+  console.log('Navegando a categoría con ID:', category.id);  // Verifica si se está ejecutando la función
+
+  this.router.navigate(['/app/ver-categorias']).then(success => {
+    if (success) {
+      console.log('Navegación exitosa');
+    } else {
+      console.error('La navegación falló');
+    }
+  });
+  this.showCategories = false;
+}
+
 
   navigateTo(route: string): void {
     this.router.navigate([route]);

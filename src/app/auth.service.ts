@@ -29,4 +29,18 @@ export class AuthService {
         })
       );
   }
+
+   // Método para obtener el ID del usuario desde el token sin librerías externas
+   getUserId(): number | null {
+    const token = localStorage.getItem('token');
+    if (!token) return null;  // Si no hay token, retorna null
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1])); // Decodificar la parte del payload
+      return payload.userId || 26;  // Devolver el ID del usuario si existe
+    } catch (error) {
+      console.error("Error al decodificar el token:", error);
+      return null;
+    }
+  }
 }

@@ -3,11 +3,13 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PerfilService, UsuarioPerfil } from '../perfil.service'; // Asegúrate de tener este servicio implementado
+import { UsuariosService } from '@app/usuarios.service';
 
 @Component({
   selector: 'app-perfil-usuario',
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule],
+  providers: [UsuariosService],
   templateUrl: './perfil-usuario.component.html',
   styleUrls: ['./perfil-usuario.component.scss']
 })
@@ -18,6 +20,7 @@ export class PerfilUsuarioComponent implements OnInit, OnDestroy {
   email: string = '';
   addresses: any[] = []; // Se pueden definir interfaces para las direcciones
   cards: any[] = [];     // Igual para las tarjetas
+  idUsuario: number | null = null;  // Almacenamos el ID del usuario
 
   popupVisible: boolean = false;
 
@@ -29,8 +32,10 @@ export class PerfilUsuarioComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router, 
     private fb: FormBuilder,
-    private perfilService: PerfilService
+    private perfilService: PerfilService,
+    private usuariosService: UsuariosService
   ) {
+    // Definir el formulario para las tarjetas
     this.cardForm = this.fb.group({
       numeroTarjeta: ['', Validators.required],
       titular: ['', Validators.required],
@@ -41,22 +46,40 @@ export class PerfilUsuarioComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // Cargar la información real del usuario desde el backend
-    this.perfilService.getPerfilUsuario().subscribe({
-      next: (data) => {
-        // Asignar datos del usuario
-        this.usuario = data;
-        this.username = data.nombres + ' ' + data.apellidos;
-        this.email = data.correo;
-        // Asignar direcciones y tarjetas si se incluyen en el objeto, o bien dejar arrays vacíos
-        this.addresses = data.direcciones ?? [];
-        this.cards = data.tarjetas ?? [];
+    // Primero, obtener el ID del usuario
+    this.usuariosService.getUserIdFromBackend().subscribe({
+      next: (idUsuario) => {
+        console.log("ID del usuario obtenido:", idUsuario);
+        this.idUsuario = idUsuario;  
+  
+        if (this.idUsuario !== null) {
+          this.perfilService.getPerfilUsuario(this.idUsuario).subscribe({
+            next: (data) => {
+              const usuario = data.usuario;  
+            
+              console.log("Usuario:", usuario);
+              console.log("Direcciones:", data.direcciones);
+              console.log("Tarjetas:", data.tarjetas);
+            
+              this.username = usuario.nombres + ' ' + usuario.apellidos;  
+              this.email = usuario.correo;  
+            
+              this.addresses = data.direcciones ?? [];
+              this.cards = data.tarjetas ?? [];
+            },
+            
+            error: (err) => {
+              console.error('Error al obtener perfil:', err);
+            }
+          });
+        }
       },
       error: (err) => {
-        console.error('Error al obtener perfil:', err);
+        console.error("Error al obtener el ID del usuario:", err);
       }
     });
   }
+  
 
   ngOnDestroy(): void {
     // Aquí puedes limpiar suscripciones si fuese necesario
@@ -69,6 +92,7 @@ export class PerfilUsuarioComponent implements OnInit, OnDestroy {
   openPopup(): void {
     this.popupVisible = true;
   }
+  
   closePopup(): void {
     this.popupVisible = false;
   }
@@ -86,10 +110,10 @@ export class PerfilUsuarioComponent implements OnInit, OnDestroy {
   openCardModal(card?: any, index?: number): void {
     if (card) {
       this.editingCardIndex = index ?? null;
-      this.cardForm.patchValue(card);
+      this.cardForm.patchValue(card); // Rellenar el formulario con los valores de la tarjeta
     } else {
       this.editingCardIndex = null;
-      this.cardForm.reset();
+      this.cardForm.reset(); // Resetear el formulario si no se está editando una tarjeta
     }
     this.showCardModal = true;
   }
@@ -101,6 +125,7 @@ export class PerfilUsuarioComponent implements OnInit, OnDestroy {
   saveCard(): void {
     if (this.cardForm.invalid) return;
     const cardData = this.cardForm.value;
+
     if (this.editingCardIndex !== null) {
       // Actualiza la tarjeta existente en el array local
       this.cards[this.editingCardIndex] = { ...cardData, selected: false };

@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ProductoSubastaService, ProductoSubasta } from '../producto-subasta.service';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { PujaService, PujarRequest } from '../puja.service';
+import { AuthService } from '@app/auth.service';
+
 
 interface TiempoRestante {
   horas: number;
@@ -14,6 +16,7 @@ interface TiempoRestante {
   selector: 'app-producto-subasta',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
+  providers: [AuthService],
   templateUrl: './producto-subasta.component.html',
   styleUrls: ['./producto-subasta.component.scss']
 })
@@ -29,7 +32,8 @@ export class ProductoSubastaComponent implements OnInit, OnDestroy {
   constructor(
     private subastaService: ProductoSubastaService,
     private fb: FormBuilder,
-    private pujaService: PujaService
+    private pujaService: PujaService,
+    private authService: AuthService
   ) {
     this.bidForm = this.fb.group({
       monto: [0, [Validators.required, Validators.min(0)]]
@@ -37,33 +41,45 @@ export class ProductoSubastaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.cargarProductosSubasta();
+    // Obtener el ID del usuario
+    const idUsuario = this.authService.getUserId(); // Asegúrate de tener el método getUserId() en AuthService
 
-    // Configurar el temporizador global que actualiza cada producto en subasta
-    this.intervalId = setInterval(() => {
-      let cambios = false;
-
-      this.productos.forEach((producto) => {
-        if (producto.fechaFin) {
-          const tiempoRestante = this.calcularTiempoRestante(new Date(producto.fechaFin));
-
-          if (this.timers[producto.idProducto]?.segundos !== tiempoRestante.segundos ||
-              this.timers[producto.idProducto]?.minutos !== tiempoRestante.minutos ||
-              this.timers[producto.idProducto]?.horas !== tiempoRestante.horas) {
-            this.timers[producto.idProducto] = tiempoRestante;
-            cambios = true;
+    console.log(idUsuario);
+    
+    if (idUsuario) {
+      // Cargar los productos de subasta para el usuario
+      this.cargarProductosSubasta(idUsuario);
+  
+      // Configurar el temporizador global que actualiza cada producto en subasta
+      this.intervalId = setInterval(() => {
+        let cambios = false;
+  
+        this.productos.forEach((producto) => {
+          if (producto.fechaFin) {
+            const tiempoRestante = this.calcularTiempoRestante(new Date(producto.fechaFin));
+  
+            // Solo actualizar si el tiempo restante ha cambiado
+            if (this.timers[producto.idProducto]?.segundos !== tiempoRestante.segundos ||
+                this.timers[producto.idProducto]?.minutos !== tiempoRestante.minutos ||
+                this.timers[producto.idProducto]?.horas !== tiempoRestante.horas) {
+              this.timers[producto.idProducto] = tiempoRestante;
+              cambios = true;
+            }
           }
+        });
+  
+        // Si hubo cambios en el temporizador, forzar actualización del DOM
+        if (cambios) {
+          this.productos = [...this.productos];
         }
-      });
-
-      if (cambios) {
-        this.productos = [...this.productos]; // Forzar actualización del DOM
-      }
-    }, 1000);
+      }, 1000);
+    } else {
+      console.error('No se pudo obtener el ID del usuario.');
+    }
   }
 
-  cargarProductosSubasta(): void {
-    this.subastaService.getProductosSubasta().subscribe({
+  cargarProductosSubasta(idUsuario: number): void {
+    this.subastaService.getProductosSubastaPorUsuario(idUsuario).subscribe({
       next: (data) => {
         this.productos = data;
         this.productos.forEach((producto) => {
@@ -79,6 +95,7 @@ export class ProductoSubastaComponent implements OnInit, OnDestroy {
       }
     });
   }
+  
   
 
   calcularTiempoRestante(fechaFin: Date | string | null): TiempoRestante {
@@ -129,16 +146,21 @@ export class ProductoSubastaComponent implements OnInit, OnDestroy {
     };
 
     this.pujaService.realizarPuja(request).subscribe({
-      next: () => {
-        alert('Puja realizada con éxito.');
+      next: (response) => {
+        // Si el backend devuelve un mensaje de éxito, lo mostramos
+        const successMessage = response.message || 'Puja realizada con éxito.';
+        alert(successMessage);
         this.closeBidModal();
-        this.cargarProductosSubasta();
+        this.ngOnInit(); // Recargar las subastas activas
       },
-      error: () => {
-        this.errorMessage = 'Error al realizar la puja. Inténtalo de nuevo.';
+      error: (err) => {
+        // Aquí capturamos el mensaje de error desde el backend
+        const errorMessage = err.error?.message || 'Error al realizar la puja. Inténtalo de nuevo.';
+        this.errorMessage = errorMessage;
       }
     });
-  }
+  }    
+    
 
   ngOnDestroy(): void {
     if (this.intervalId) {

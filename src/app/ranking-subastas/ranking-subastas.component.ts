@@ -17,8 +17,8 @@ interface Subasta {
 })
 export class RankingSubastasComponent {
   subastas: Subasta[] = [
-    { id: 1, producto: 'Producto A', ofertas: 25, fechaFinal: new Date(Date.now() + 48 * 3600000) },
-    { id: 2, producto: 'Producto B', ofertas: 18, fechaFinal: new Date(Date.now() + 72 * 3600000) },
-    { id: 3, producto: 'Producto C', ofertas: 30, fechaFinal: new Date(Date.now() + 24 * 3600000) },
+    { id: 1, producto: 'Camiseta futbol', ofertas: 25, fechaFinal: new Date(Date.now() + 48 * 3600000) },
+    { id: 2, producto: 'Auto de juguete', ofertas: 18, fechaFinal: new Date(Date.now() + 72 * 3600000) },
+    { id: 3, producto: 'Labial', ofertas: 8, fechaFinal: new Date(Date.now() + 24 * 3600000) },
   ];
 }
